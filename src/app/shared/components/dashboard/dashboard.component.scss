@@ -1,0 +1,68 @@
+@use "../../../../color-variables.scss" as *;
+
+.navbar {
+  background-color: $bg-light-clean;
+  border-bottom: 1px solid $blue-300;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: $blue-700;
+}
+
+.logo-link {
+  background-color: $blue-700;
+  color: $text-light;
+  padding: 0.222rem 0.444rem;
+  border-radius: 5px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+  color: $text-dark;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.titulo {
+  background-color: $bg-light-clean;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: $text-dark;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+
+  h1,
+  p {
+    margin-top: 0.6rem;
+  }
+
+  app-btn-default {
+    margin-top: 1.6rem;
+  }
+
+}
+
+.tarefas {
+  background-color: $bg-light-clean;
+  width: 100%;
+  color: $text-dark;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}

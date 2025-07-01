@@ -1,0 +1,26 @@
+// Paleta base de azuis escuros
+$blue-900: #0d1b2a; // mais escuro
+$blue-800: #1b263b;
+$blue-700: #2a374f;
+$blue-600: #3c4d66;
+$blue-500: #415a77; // intermediário
+$blue-400: #5c7695;
+$blue-300: #778da9;
+$blue-200: #a9bacf;
+$blue-100: #dce3ea; // bem claro
+
+// Texto
+$text-light: #f5f7fa;
+$text-dark: #0d1b2a;
+$text-muted: #a0a7af;
+
+// Backgrounds
+$bg-dark: $blue-900;
+$bg-medium: $blue-700;
+$bg-light: $blue-200;
+$bg-light-clean: #f7f7f7;
+
+// Gradientes
+$gradient-main: linear-gradient(135deg, $blue-700, $blue-400);
+$gradient-soft: linear-gradient(135deg, $blue-600, $blue-300);
+$gradient-light: linear-gradient(135deg, $blue-200, $blue-100);
