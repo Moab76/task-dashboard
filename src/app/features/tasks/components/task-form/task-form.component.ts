@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { TaskData } from '../../services/task-data';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TaskStoreService } from '../../services/task-store';
 
 @Component({
   selector: 'app-task-form',
@@ -12,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './task-form.component.scss'
 })
 export class TaskFormComponent {
+  private store = inject(TaskStoreService);
   @Input() edicao = false;
   @Output() fechar = new EventEmitter<void>();
 
@@ -42,14 +44,17 @@ export class TaskFormComponent {
 
       // Formatar a data para o padrão ISO (YYYY-MM-DD)
       if (formData.dueDate) {
-        formData.dueDate = new Date(formData.dueDate).toISOString().split('T')[0];
+        formData.dueDate = new Date(formData.dueDate).toISOString();
       }
 
       console.log('Dados do formulário:', formData);
 
       this.taskData.create(formData).subscribe({
-        next: () => {
-           this.fecharFormulario();
+        next: (novaTask) => {
+          this.fecharFormulario();
+          this.store.tarefas.update(list => [...list, novaTask]);
+          this.fechar.emit();
+          this.form.reset();
           alert('Tarefa salva com sucesso!');
           this.form.reset();
         },

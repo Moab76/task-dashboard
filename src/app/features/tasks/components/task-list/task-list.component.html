@@ -36,15 +36,19 @@
 
           <span>
             @if (task.completed) {
-            <button class="tag" (click)="abrirFormulario(task)" disabled>
+            <button class="tag" class="btn-editar" (click)="abrirFormulario(task)" disabled>
               Editar
             </button>
             } @else {
-            <button class="tag" (click)="abrirFormulario(task)">
+            <button class="btn-editar" (click)="abrirFormulario(task)">
               Editar
             </button>
             }
-
+          </span>
+          <span>
+            <button class="btn-delete" (click)="excluirTarefa(task)">
+              Excluir
+            </button>
           </span>
         </div>
       </div>
@@ -55,11 +59,17 @@
   </ul>
 </div>
 
-@if (tarefaEditando) {
+
+@if (mostrarOverley) {
 <div class="modal-overlay" (click)="fecharFormulario($event)">
   <div class="modal-content">
+    @if (tarefaEditando){
     <app-screen-edit [task]="tarefaEditando" (taskEditada)="salvarEdicao($event)" (fechar)="fecharFormulario()">
     </app-screen-edit>
+    }
+    @if (exibirConfirmacao) {
+    <app-screen-confirm (acaoConcluida)="onEventoRecebido($event)" (fechar)="fecharFormulario()"></app-screen-confirm>
+    }
   </div>
 </div>
 }

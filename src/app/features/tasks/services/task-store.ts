@@ -7,9 +7,11 @@ import { Task } from './task-data';
 })
 export class TaskStoreService {
   private readonly _tarefas = signal<Task[]>([]);
+  private readonly _tarefas_excluidas = signal<Task[]>([]);
 
   // Getter para acesso externo
   readonly tarefas = this._tarefas;
+  readonly tarefas_excluidas = this._tarefas_excluidas;
 
   // Computed para tarefas pendentes
   readonly pendingCount = computed(() =>
@@ -26,4 +28,9 @@ export class TaskStoreService {
       tasks.map(task => task.id === updated.id ? updated : task)
     );
   }
+
+  addTask(novaTask: Task) {
+    this._tarefas_excluidas.update(tasks => [...tasks, novaTask]);
+  }
+
 }

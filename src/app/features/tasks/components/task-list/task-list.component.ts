@@ -5,11 +5,13 @@ import { lastValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { TaskStoreService } from '../../services/task-store';
 import { ScreenEditComponent } from "../screen-edit/screen-edit.component";
+import { ScreenConfirmComponent } from "../screen-confirm/screen-confirm.component";
+import { BaseOptions } from 'node:vm';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ScreenEditComponent], // DatePipe adicionado aqui
+  imports: [CommonModule, FormsModule, ScreenEditComponent, ScreenConfirmComponent], // DatePipe adicionado aqui
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
   providers: [DatePipe]
@@ -19,21 +21,24 @@ export class TaskListComponent implements OnInit {
   private datePipe = inject(DatePipe);
   private store = inject(TaskStoreService);
 
+  mostrarOverley = false;
   tarefas = this.store.tarefas;
-
   tarefaEditando: Task | null = null;
 
-
   abrirFormulario(tarefa: Task) {
+    this.mostrarOverley = true;
     console.log('Abrindo modal para tarefa:', tarefa);
     this.tarefaEditando = tarefa;
     document.body.style.overflow = 'hidden';
   }
 
   fecharFormulario(event?: Event) {
-    console.log('Tentando fechar modal', event);
     if (!event || (event.target as Element).classList.contains('modal-overlay')) {
+
+    console.log('Tentando fechar modal', event);
       this.tarefaEditando = null;
+      this.mostrarOverley = false;
+      this.exibirConfirmacao = false
       document.body.style.overflow = '';
     }
   }
@@ -184,4 +189,48 @@ export class TaskListComponent implements OnInit {
   }
 
 
-}
+  exibirConfirmacao = false;
+  private resolverPromise: ((valor: boolean) => void) | null = null;
+
+  onEventoRecebido(dados: boolean) {
+    if (this.resolverPromise) {
+      this.resolverPromise(dados);
+      this.resolverPromise = null;
+    }
+  }
+
+  async excluirTarefa(task: Task) {
+    if (task.id) {
+      try {
+        this.exibirConfirmacao = true;
+        this.mostrarOverley = true;
+
+        const dadosRecebidos = await new Promise<boolean>((resolve) => {
+          this.resolverPromise = resolve;
+        });
+
+        if (dadosRecebidos) {
+          const id = task.id.toString();
+
+          // Atualização otimista: remove a tarefa da lista antes da requisição
+          this.tarefas.update(tasks => tasks.filter(t => t.id !== task.id));
+          this.store.addTask(task);
+
+          // Faz a requisição de exclusão
+          await lastValueFrom(this.taskService.delete(id));
+
+          console.log("Tarefa excluída com sucesso");
+        }
+      } catch (err) {
+        console.error('Erro ao excluir tarefa:', err);
+
+        // Reverte a atualização otimista em caso de erro
+        this.tarefas.update(tasks => [...tasks, task]);
+
+        this.error.set('Falha ao excluir tarefa. Tente novamente.');
+      }
+    } else {
+      console.error('Tentativa de excluir tarefa sem ID');
+    }
+  }
+} 

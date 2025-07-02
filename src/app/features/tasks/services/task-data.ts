@@ -33,7 +33,7 @@ export class TaskData {
   }
 
   /** DELETE /api/tasks/:id */
-  delete(id: string): Observable<void> {
+  delete(id: string | number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

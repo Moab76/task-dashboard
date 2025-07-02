@@ -73,9 +73,11 @@
     &.completed {
       opacity: 0.7;
       background-color: #f9fafb;
-      
+
       .task-content {
-        strong, p {
+
+        strong,
+        p {
           text-decoration: line-through;
           color: #6b7280;
         }
@@ -92,6 +94,42 @@
 
     .task-content {
       flex: 1;
+
+      .btn-editar, .btn-delete {
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        background-color: #6eff4a;
+        color: #073a00;
+        border: none;
+        cursor: pointer;
+
+        &:disabled {
+          padding: 0.3rem 0.8rem;
+          border-radius: 20px;
+          font-size: 0.8rem;
+          font-weight: bold;
+          background-color: #9cff83;
+          color: #073a00;
+          border: none;
+        }
+
+    
+        &:hover {
+          background-color: #27c500;
+        }
+      }
+
+      .btn-delete {
+        background-color:  #ffb5b5;
+        color: #7a0000;
+
+        &:hover {
+          background-color: #fc1515;
+        }
+      }
+      
 
       strong {
         font-size: 1.1rem;
@@ -213,16 +251,16 @@
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: slideIn 0.3s ease;
-  
+
   .form-container {
     padding: 0;
     box-shadow: none;
-    
+
     .task-form {
       box-shadow: none;
       border-radius: 0;
       max-width: 100%;
-      
+
       &:hover {
         transform: none;
         box-shadow: none;
@@ -232,12 +270,21 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateY(-20px); }
-  to { transform: translateY(0); }
-}
+  from {
+    transform: translateY(-20px);
+  }
 
+  to {
+    transform: translateY(0);
+  }
+}
