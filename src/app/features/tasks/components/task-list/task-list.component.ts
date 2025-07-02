@@ -44,7 +44,7 @@ export class TaskListComponent implements OnInit {
   }
 
   // Sinal para o valor do select
-  selectedFilter = signal<'todas' | 'urgente' | 'normal' | 'concluidas' | 'naoConcluidas'>('todas');
+  selectedFilter = signal<'todas' | 'urgente' | 'normal' | 'concluidas' | 'naoConcluidas' | 'excluidas'>('todas');
 
 
   loading = signal(true);
@@ -64,6 +64,8 @@ export class TaskListComponent implements OnInit {
   );
 
   // Tarefas filtradas e ordenadas
+  excluido = false;
+
   filteredTasks = computed(() => {
     const filterValue = this.selectedFilter();
     const allTasks = this.tarefas();
@@ -73,17 +75,25 @@ export class TaskListComponent implements OnInit {
     switch (filterValue) {
       case 'todas':
         filtered = allTasks;
+        this.excluido = false;
         break;
       case 'urgente':
       case 'normal':
         filtered = allTasks.filter(task => this.getPriority(task) === filterValue);
+        this.excluido = false;
         break;
       case 'concluidas':
         filtered = allTasks.filter(task => task.completed);
+        this.excluido = false;
         break;
       case 'naoConcluidas':
         filtered = allTasks.filter(task => !task.completed);
+        this.excluido = false;
         break;
+      case 'excluidas':
+        this.excluido = true;
+        filtered = this.store.tarefas_excluidas();
+        break
     }
 
     return filtered.sort((a, b) => {

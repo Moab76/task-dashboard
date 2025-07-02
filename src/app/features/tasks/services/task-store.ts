@@ -28,6 +28,9 @@ export class TaskStoreService {
       tasks.map(task => task.id === updated.id ? updated : task)
     );
   }
+  addNewTask(novaTask: Task) {
+    this._tarefas.update(tasks => [...tasks, novaTask]);
+  }
 
   addTask(novaTask: Task) {
     this._tarefas_excluidas.update(tasks => [...tasks, novaTask]);

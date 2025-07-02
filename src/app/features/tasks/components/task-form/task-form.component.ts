@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { TaskData } from '../../services/task-data';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { lastValueFrom } from 'rxjs';
+import { TaskStoreService } from '../../services/task-store';
 
 @Component({
   selector: 'app-task-form',
@@ -12,10 +14,13 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './task-form.component.scss'
 })
 export class TaskFormComponent {
+  store = inject(TaskStoreService);
+
   @Input() edicao = false;
   @Output() fechar = new EventEmitter<void>();
 
   public form: FormGroup;
+  taskService: any;
 
   constructor(private fb: FormBuilder, private taskData: TaskData) {
     this.form = this.fb.group({
@@ -36,7 +41,7 @@ export class TaskFormComponent {
   }
 
 
-  onSubmit() {
+   onSubmit() {
     if (this.form.valid) {
       const formData = this.form.value;
 
@@ -48,8 +53,9 @@ export class TaskFormComponent {
       console.log('Dados do formulário:', formData);
 
       this.taskData.create(formData).subscribe({
-        next: () => { 
+        next: (task) => { 
           this.fecharFormulario();
+          this.store.addNewTask(task);  
           alert('Tarefa salva com sucesso!');
           this.form.reset();
         },

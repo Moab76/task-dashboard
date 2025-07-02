@@ -8,6 +8,7 @@
       <option value="normal">Normais</option>
       <option value="concluidas">Concluídas</option>
       <option value="naoConcluidas">Não concluídas</option>
+      <option value="excluidas">Excluidas</option>
     </select>
 
   </div>
@@ -17,8 +18,12 @@
     @for (task of filteredTasks(); track task.id) {
     <li class="task-card" [class.completed]="task.completed">
 
-
-      <input type="checkbox" [checked]="task.completed" (change)="toggleCompletion(task)">
+      @if (excluido) {
+        <input type="checkbox" [checked]="task.completed" (change)="toggleCompletion(task)" disabled>
+      } @else {
+        <input type="checkbox" [checked]="task.completed" (change)="toggleCompletion(task)" >
+      }
+      
 
       <div class="task-content">
         <strong>{{ task.title }}</strong>
@@ -38,7 +43,7 @@
           </span>
 
           <span>
-            @if (task.completed) {
+            @if (task.completed || excluido) {
             <button class="tag" class="btn-editar" (click)="abrirFormulario(task)" disabled>
               Editar
             </button>
@@ -48,11 +53,14 @@
             </button>
             }
           </span>
-          <span>
+          @if(!excluido){
+            <span>
             <button class="btn-delete" (click)="excluirTarefa(task)">
               Excluir
             </button>
           </span>
+          }
+          
         </div>
       </div>
     </li>
