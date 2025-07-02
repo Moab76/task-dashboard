@@ -1,0 +1,80 @@
+<div class="form-container">
+  <form class="task-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-header">
+      <i class="fas fa-clipboard-list form-icon"></i>
+      <h2>{{ edicao ? 'Editar Tarefa' : 'Nova Tarefa' }}</h2>
+    </div>
+
+    <div class="form-content">
+      <div class="form-group">
+        <label for="title">Título *</label>
+        <div class="input-container">
+          <input 
+            type="text" 
+            id="title" 
+            formControlName="title" 
+            required
+            placeholder="Digite o título da tarefa"
+          />
+          <i class="fas fa-heading input-icon"></i>
+        </div>
+        @if (title?.invalid && title?.touched) {
+          <div class="error-messages">
+            @if (title?.errors?.['required']) {
+              <div>Título é obrigatório</div>
+            }
+            @if (title?.errors?.['minlength']) {
+              <div>Mínimo 3 caracteres</div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição</label>
+        <div class="input-container">
+          <textarea 
+            id="description" 
+            formControlName="description" 
+            rows="3"
+            placeholder="Descreva detalhes sobre esta tarefa..."
+          ></textarea>
+          <i class="fas fa-align-left input-icon"></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dueDate">Data de Vencimento</label>
+        <div class="input-container">
+          <input 
+            type="date" 
+            id="dueDate" 
+            formControlName="dueDate" 
+          />
+          <i class="fas fa-calendar-alt input-icon"></i>
+        </div>
+      </div>
+
+      @if (edicao) {
+        <div class="form-group checkbox-container">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="completed" />
+            <span class="checkmark"></span>
+            Concluído
+          </label>
+        </div>
+      }
+
+      <div class="form-actions">
+        <button 
+          type="submit"
+          [disabled]="form.invalid"
+          class="submit-button"
+        >
+          <i class="fas fa-save button-icon"></i>
+          {{ edicao ? 'Atualizar Tarefa' : 'Criar Tarefa' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

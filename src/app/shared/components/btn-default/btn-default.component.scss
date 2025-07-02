@@ -1,0 +1,88 @@
+@use "../../../../color-variables.scss" as *;
+
+.container-btn {
+    margin-top: 0.818rem;
+    
+    .btn {
+        display: flex;
+        flex-direction: row;
+        background-color: $bg-dark;
+        height: 4rem;
+        width: 14rem;
+        min-width: 3rem;
+        border-radius: 0.313rem;
+        padding: 0.313rem 0;
+        font-size: 24px;
+        font-weight: 900;
+        border: none;
+        color: $text-light;
+        justify-content: center;
+        align-items: center;
+        transition: all .3s ease;
+
+        .text-top-btn{
+            font-size: 15px;
+            font-weight: 500;
+            padding-right: 1rem;
+        }
+
+    }
+
+    .btn:hover {
+        color: $text-dark;
+        background-color: $bg-light;
+    }
+
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease;
+  
+  .form-container {
+    padding: 0;
+    box-shadow: none;
+    
+    .task-form {
+      box-shadow: none;
+      border-radius: 0;
+      max-width: 100%;
+      
+      &:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); }
+  to { transform: translateY(0); }
+}
+

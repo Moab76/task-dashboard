@@ -1,0 +1,32 @@
+<header>
+    <nav class="sidenav" [class]="collapsed ? 'sidenav-collapsed': ''">
+        <div class="logo-container">
+            <button class="logo" (click)="toggleCollapse()">A</button>
+            @if (collapsed) {
+            <div class="logo-text">Anotação</div>
+            <button class="btn-close" (click)="closeSidenav()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            }
+        </div>
+        <ul class="sidenav-nav">
+
+            @for (item of navData; track item) {
+                <li class="sidenav-nav-item">
+                    <a class="sidenav-nav-link" 
+                        [routerLink]="item.routerLink"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}"
+                    >
+
+                        <i class="sidenav-link-icon" [class]="item.icon"></i>
+                        @if (collapsed) {
+                        <span class="sidenav-link-text"> {{item.label}} </span>
+                        }
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </nav>
+</header>

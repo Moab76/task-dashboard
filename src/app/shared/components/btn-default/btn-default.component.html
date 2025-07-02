@@ -1,0 +1,17 @@
+<div class="container-btn">
+  <button class="btn" (click)="abrirFormulario()">
+    <div class="text-top-btn">Adicionar nova tarefa</div>
+    <i class="fa-solid fa-plus"></i>
+  </button>
+
+  @if (mostrarFormulario) {
+    <div class="modal-overlay" (click)="fecharFormulario($event)">
+      <div class="modal-content">
+        <app-task-form 
+          [edicao]="false" 
+          (fechar)="fecharFormulario()"
+        ></app-task-form>
+      </div>
+    </div>
+  }
+</div>

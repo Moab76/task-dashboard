@@ -1,0 +1,47 @@
+<div class="task-section">
+  <!-- Cabeçalho com título e filtro -->
+  <div class="task-header">
+    <h2>Tarefas Pendentes</h2>
+    <select [value]="selectedFilter()" (change)="updateFilter($event)">
+      <option value="todas">Todas</option>
+      <option value="urgente">Urgentes</option>
+      <option value="normal">Normais</option>
+    </select>
+  </div>
+
+  <!-- Lista de Tarefas -->
+  <ul class="task-list">
+    @for (task of filteredTasks(); track task.id) {
+      <li class="task-card" 
+          [class.completed]="task.completed">
+        
+        <input 
+          type="checkbox" 
+          [checked]="task.completed"
+          (change)="toggleCompletion(task)">
+        
+        <div class="task-content">
+          <strong>{{ task.title }}</strong>
+          
+          @if (task.description) {
+            <p>{{ task.description }}</p>
+          }
+          
+          <div class="meta">
+            @if (getSafeDate(task.dueDate)) {
+              <span>📅 {{ formatDate(task.dueDate) }}</span>
+            }
+            
+            <span class="tag" 
+                  [class.red]="getPriority(task) === 'urgente'"
+                  [class.green]="getPriority(task) === 'normal'">
+              {{ getPriorityLabel(getPriority(task)) }}
+            </span>
+          </div>
+        </div>
+      </li>
+    } @empty {
+      <li class="empty-message">Nenhuma tarefa encontrada</li>
+    }
+  </ul>
+</div>
