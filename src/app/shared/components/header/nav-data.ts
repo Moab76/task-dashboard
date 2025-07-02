@@ -11,9 +11,9 @@ export const navbarData = [
         icon: 'fa-solid fa-rectangle-list',
         label: 'Tarefas'
     },
-    {
+    /*{
         routerLink: 'historico',
         icon: 'fa-solid fa-clock-rotate-left',
         label: 'Histórico'
-    }
+    }*/
 ];

@@ -1,3 +1,5 @@
+@use "../../../../../color-variables.scss" as *;
+
 .task-section {
   max-width: 800px;
   margin: 0 auto;
@@ -9,7 +11,7 @@
     align-items: center;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid $blue-200;
 
     h2 {
       font-size: 1.5rem;

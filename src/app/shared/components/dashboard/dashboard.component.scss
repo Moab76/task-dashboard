@@ -1,5 +1,14 @@
 @use "../../../../color-variables.scss" as *;
 
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid $blue-300;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
 .navbar {
   background-color: $bg-light-clean;
   border-bottom: 1px solid $blue-300;

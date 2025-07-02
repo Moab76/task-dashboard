@@ -3,6 +3,7 @@ import { Task, TaskData } from '../../services/task-data';
 import { CommonModule, DatePipe} from '@angular/common';
 import { lastValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { TaskStoreService } from '../../services/task-store';
 
 @Component({
   selector: 'app-task-list',
@@ -15,7 +16,9 @@ import { FormsModule } from '@angular/forms';
 export class TaskListComponent implements OnInit {
   private taskService = inject(TaskData);
   private datePipe = inject(DatePipe); 
-  tarefas = signal<Task[]>([]);
+  private store = inject(TaskStoreService);
+  
+  tarefas = this.store.tarefas;
 
   // Sinal para o valor do select
   selectedFilter = signal<'todas' | 'urgente' | 'normal'>('todas');

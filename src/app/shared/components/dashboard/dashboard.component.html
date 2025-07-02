@@ -1,18 +1,18 @@
-<header class="navbar">
-    <div class="logo"> <a class="logo-link"><i class="fa-solid fa-check"></i></a> TaskManager</div>
-    <div class="user-info">
-        <span>  tarefas pendentes</span>
-        <img alt="Usuário" class="avatar" />
-    </div>
-</header>
-<main>
+<main class="card">
+    <header class="navbar">
+        <div class="logo"> <a class="logo-link"><i class="fa-solid fa-check"></i></a> TaskManager</div>
+        <div class="user-info">
+            <span>{{ pendingCount()}} tarefas pendentes</span>
+        </div>
+    </header>
+
     <section class="titulo">
         <h1>Gerencie suas Tarefas</h1>
         <p>Organize, acompanhe e complete suas atividades de forma eficiente</p>
         <app-btn-default></app-btn-default>
     </section>
-    
+
     <section class="tarefas">
         <app-task-list></app-task-list>
-    </section>    
+    </section>
 </main>
