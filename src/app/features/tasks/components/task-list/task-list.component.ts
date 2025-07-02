@@ -35,7 +35,7 @@ export class TaskListComponent implements OnInit {
   fecharFormulario(event?: Event) {
     if (!event || (event.target as Element).classList.contains('modal-overlay')) {
 
-    console.log('Tentando fechar modal', event);
+      console.log('Tentando fechar modal', event);
       this.tarefaEditando = null;
       this.mostrarOverley = false;
       this.exibirConfirmacao = false
@@ -44,7 +44,8 @@ export class TaskListComponent implements OnInit {
   }
 
   // Sinal para o valor do select
-  selectedFilter = signal<'todas' | 'urgente' | 'normal'>('todas');
+  selectedFilter = signal<'todas' | 'urgente' | 'normal' | 'concluidas' | 'naoConcluidas'>('todas');
+
 
   loading = signal(true);
   error = signal<string | null>(null);
@@ -58,29 +59,43 @@ export class TaskListComponent implements OnInit {
     this.tarefas().filter(task => this.getPriority(task) === 'normal').length
   );
 
+  concluitasCount = computed(() =>
+    this.tarefas().filter(task => task.completed).length
+  );
+
   // Tarefas filtradas e ordenadas
   filteredTasks = computed(() => {
     const filterValue = this.selectedFilter();
     const allTasks = this.tarefas();
 
-    let filtered = filterValue === 'todas'
-      ? allTasks
-      : allTasks.filter(task => this.getPriority(task) === filterValue);
+    let filtered: Task[] = [];
 
-    // Ordenação segura com tratamento de datas
+    switch (filterValue) {
+      case 'todas':
+        filtered = allTasks;
+        break;
+      case 'urgente':
+      case 'normal':
+        filtered = allTasks.filter(task => this.getPriority(task) === filterValue);
+        break;
+      case 'concluidas':
+        filtered = allTasks.filter(task => task.completed);
+        break;
+      case 'naoConcluidas':
+        filtered = allTasks.filter(task => !task.completed);
+        break;
+    }
+
     return filtered.sort((a, b) => {
       const aPriority = this.getPriority(a);
       const bPriority = this.getPriority(b);
 
-      // Prioridade: urgentes primeiro
       if (aPriority === 'urgente' && bPriority !== 'urgente') return -1;
       if (bPriority === 'urgente' && aPriority !== 'urgente') return 1;
 
-      // Converter para Date se necessário
       const aDate = this.convertToDate(a.dueDate);
       const bDate = this.convertToDate(b.dueDate);
 
-      // Comparação segura
       return (aDate?.getTime() || Infinity) - (bDate?.getTime() || Infinity);
     });
   });
@@ -149,7 +164,7 @@ export class TaskListComponent implements OnInit {
   // Atualiza o filtro quando o select muda
   updateFilter(event: Event) {
     const select = event.target as HTMLSelectElement;
-    this.selectedFilter.set(select.value as 'todas' | 'urgente' | 'normal');
+    this.selectedFilter.set(select.value as 'todas' | 'urgente' | 'normal' | 'concluidas');
   }
 
   public getSafeDate(dateValue: any): Date | null {
