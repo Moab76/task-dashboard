@@ -1,0 +1,40 @@
+@use "../../../../../color-variables.scss" as *;
+
+.confirm-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $bg-light-clean;
+
+  h1 {
+    margin: 3rem 0; 
+  }
+
+  
+
+  .btn-accept, .btn-noAceept{
+    padding: 0.5rem 2rem;
+    margin-bottom: 3rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-size: 1.3rem;
+  }
+
+  .btn-accept {
+    background-color: #8aff8a;
+    color: #155800;
+    margin-right: 5rem;
+  }
+
+  .btn-noAceept {
+    background-color: #ff8a8a;
+    color: #580000;
+  }
+  
+}
