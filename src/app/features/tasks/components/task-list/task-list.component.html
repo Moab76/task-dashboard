@@ -12,36 +12,54 @@
   <!-- Lista de Tarefas -->
   <ul class="task-list">
     @for (task of filteredTasks(); track task.id) {
-      <li class="task-card" 
-          [class.completed]="task.completed">
-        
-        <input 
-          type="checkbox" 
-          [checked]="task.completed"
-          (change)="toggleCompletion(task)">
-        
-        <div class="task-content">
-          <strong>{{ task.title }}</strong>
-          
-          @if (task.description) {
-            <p>{{ task.description }}</p>
+    <li class="task-card" [class.completed]="task.completed">
+
+
+      <input type="checkbox" [checked]="task.completed" (change)="toggleCompletion(task)">
+
+      <div class="task-content">
+        <strong>{{ task.title }}</strong>
+
+        @if (task.description) {
+        <p>{{ task.description }}</p>
+        }
+
+        <div class="meta">
+          @if (getSafeDate(task.dueDate)) {
+          <span>📅 {{ formatDate(task.dueDate) }}</span>
           }
-          
-          <div class="meta">
-            @if (getSafeDate(task.dueDate)) {
-              <span>📅 {{ formatDate(task.dueDate) }}</span>
+
+          <span class="tag" [class.red]="getPriority(task) === 'urgente'"
+            [class.green]="getPriority(task) === 'normal'">
+            {{ getPriorityLabel(getPriority(task)) }}
+          </span>
+
+          <span>
+            @if (task.completed) {
+            <button class="tag" (click)="abrirFormulario(task)" disabled>
+              Editar
+            </button>
+            } @else {
+            <button class="tag" (click)="abrirFormulario(task)">
+              Editar
+            </button>
             }
-            
-            <span class="tag" 
-                  [class.red]="getPriority(task) === 'urgente'"
-                  [class.green]="getPriority(task) === 'normal'">
-              {{ getPriorityLabel(getPriority(task)) }}
-            </span>
-          </div>
+
+          </span>
         </div>
-      </li>
+      </div>
+    </li>
     } @empty {
-      <li class="empty-message">Nenhuma tarefa encontrada</li>
+    <li class="empty-message">Nenhuma tarefa encontrada</li>
     }
   </ul>
 </div>
+
+@if (tarefaEditando) {
+<div class="modal-overlay" (click)="fecharFormulario($event)">
+  <div class="modal-content">
+    <app-screen-edit [task]="tarefaEditando" (taskEditada)="salvarEdicao($event)" (fechar)="fecharFormulario()">
+    </app-screen-edit>
+  </div>
+</div>
+}

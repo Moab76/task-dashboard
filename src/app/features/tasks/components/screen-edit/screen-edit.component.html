@@ -1,0 +1,61 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="task-form">
+  <div class="form-header">
+    <i class="fas fa-clipboard-list form-icon"></i>
+    <h2>Editar Tarefa</h2>
+  </div>
+
+  <div class="form-content">
+    <!-- Título -->
+    <div class="form-group">
+      <label for="title">Título:</label>
+      <div class="input-container">
+        <input id="title" type="text" formControlName="title" />
+        <i class="fas fa-heading input-icon"></i>
+      </div>
+      @if (form.get('title')?.invalid && form.get('title')?.touched) {
+        <div class="error-messages">
+          @if (form.get('title')?.errors?.['required']) {
+            <div>Título é obrigatório</div>
+          }
+          @if (form.get('title')?.errors?.['minlength']) {
+            <div>Mínimo 3 caracteres</div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Descrição -->
+    <div class="form-group">
+      <label for="description">Descrição:</label>
+      <div class="input-container">
+        <textarea id="description" formControlName="description"></textarea>
+        <i class="fas fa-align-left input-icon"></i>
+      </div>
+    </div>
+
+    <!-- Data -->
+    <div class="form-group">
+      <label for="dueDate">Data de Vencimento:</label>
+      <div class="input-container">
+        <input type="datetime-local" id="dueDate" formControlName="dueDate" />
+        <i class="fas fa-calendar-alt input-icon"></i>
+      </div>
+    </div>
+
+    <!-- Concluída -->
+    <div class="form-group checkbox-container">
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="completed" />
+        <span class="checkmark"></span>
+        Concluída
+      </label>
+    </div>
+
+    <!-- Botão -->
+    <div class="form-actions">
+      <button type="submit" class="submit-button" [disabled]="form.invalid" >
+        <i class="fas fa-save"></i> Salvar
+      </button>
+    </div>
+  </div>
+</form>

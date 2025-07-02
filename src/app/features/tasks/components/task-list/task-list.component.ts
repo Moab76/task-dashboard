@@ -1,24 +1,42 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { Task, TaskData } from '../../services/task-data';
-import { CommonModule, DatePipe} from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { lastValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { TaskStoreService } from '../../services/task-store';
+import { ScreenEditComponent } from "../screen-edit/screen-edit.component";
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, FormsModule], // DatePipe adicionado aqui
+  imports: [CommonModule, FormsModule, ScreenEditComponent], // DatePipe adicionado aqui
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
-  providers: [DatePipe] 
+  providers: [DatePipe]
 })
 export class TaskListComponent implements OnInit {
   private taskService = inject(TaskData);
-  private datePipe = inject(DatePipe); 
+  private datePipe = inject(DatePipe);
   private store = inject(TaskStoreService);
-  
+
   tarefas = this.store.tarefas;
+
+  tarefaEditando: Task | null = null;
+
+
+  abrirFormulario(tarefa: Task) {
+    console.log('Abrindo modal para tarefa:', tarefa);
+    this.tarefaEditando = tarefa;
+    document.body.style.overflow = 'hidden';
+  }
+
+  fecharFormulario(event?: Event) {
+    console.log('Tentando fechar modal', event);
+    if (!event || (event.target as Element).classList.contains('modal-overlay')) {
+      this.tarefaEditando = null;
+      document.body.style.overflow = '';
+    }
+  }
 
   // Sinal para o valor do select
   selectedFilter = signal<'todas' | 'urgente' | 'normal'>('todas');
@@ -148,4 +166,22 @@ export class TaskListComponent implements OnInit {
       return null;
     }
   }
+
+  async salvarEdicao(taskEditada: Task) {
+    try {
+      this.tarefas.update(tarefas =>
+        tarefas.map(t => t.id === taskEditada.id ? taskEditada : t)
+      );
+
+      await lastValueFrom(this.taskService.update(taskEditada));
+
+      this.tarefaEditando = null;
+      document.body.style.overflow = '';
+    } catch (err) {
+      console.error('Erro ao salvar tarefa editada:', err);
+      this.error.set('Erro ao salvar tarefa. Tente novamente.');
+    }
+  }
+
+
 }
